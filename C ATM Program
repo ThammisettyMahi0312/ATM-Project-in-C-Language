@@ -1,0 +1,76 @@
+#include <stdio.h>
+// Account structure
+struct Account {
+    int pin;
+    float balance;
+};
+// Function prototypes
+void checkBalance(struct Account acc);
+void depositMoney(struct Account *acc);
+void withdrawMoney(struct Account *acc);
+int main() {
+    struct Account user = {1234, 5000.0}; // Default account (PIN: 1234, Balance: 5000)
+    int enteredPin, choice;
+    printf("Welcome to the ATM\n");
+    printf("Enter your PIN: ");
+    scanf("%d", &enteredPin);
+    // Authentication
+    if (enteredPin != user.pin) {
+        printf("Invalid PIN. Access Denied.\n");
+        return 1;
+    }
+    // ATM Menu
+    do {
+        printf("\n===== ATM MENU =====\n");
+        printf("1. Check Balance\n");
+        printf("2. Deposit Money\n");
+        printf("3. Withdraw Money\n");
+        printf("4. Exit\n");
+        printf("Choose an option: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                checkBalance(user);
+                break;
+            case 2:
+                depositMoney(&user);
+                break;
+            case 3:
+                withdrawMoney(&user);
+                break;
+            case 4:
+                printf("Thank you for using our ATM. Goodbye!\n");
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");        }
+    } while (choice != 4);
+    return 0;
+}
+// Function to check balance
+void checkBalance(struct Account acc) {
+    printf("Your current balance is: $%.2f\n", acc.balance);
+}
+// Function to deposit money
+void depositMoney(struct Account *acc) {
+    float amount;
+    printf("Enter amount to deposit: $");
+    scanf("%f", &amount);
+    if (amount > 0) {
+        acc->balance += amount;
+        printf("Deposit successful! New balance: $%.2f\n", acc->balance);
+    } else {
+        printf("Invalid deposit amount.\n");
+    }
+}
+// Function to withdraw money
+void withdrawMoney(struct Account *acc) {
+    float amount;
+    printf("Enter amount to withdraw: $");
+    scanf("%f", &amount);
+    if (amount > 0 && amount <= acc->balance) {
+        acc->balance -= amount;
+        printf("Withdrawal successful! Remaining balance: $%.2f\n", acc->balance);
+    } else {
+        printf("Insufficient balance or invalid amount.\n");
+    }
+}
